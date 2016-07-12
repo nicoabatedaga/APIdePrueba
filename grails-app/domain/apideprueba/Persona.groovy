@@ -4,7 +4,7 @@ class Persona {
 
     static belongsTo = Empresa
     String nombre
-    int dni
+    Integer dni
     String email
 
 
@@ -12,5 +12,21 @@ class Persona {
         nombre(size: 3..50)
         dni(range: 1000000..60000000)
         email(email: true)
+    }
+
+    public Persona(String nombre, Integer dni, String email){
+        this.nombre = nombre
+        this.dni = dni
+        this.email = email
+    }
+
+    public getNombre(){
+        return this.nombre
+    }
+    public getdni(){
+        return this.dni
+    }
+    public getEmail(){
+        return this.email
     }
 }

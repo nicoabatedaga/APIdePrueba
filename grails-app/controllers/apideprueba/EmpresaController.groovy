@@ -10,8 +10,10 @@ class EmpresaController {
         render "Este es el controlador de empresa"
     }
 
-    def get(){
-
+    def get(Integer dni){
+        def empresaService
+        Persona p = empresaService.getEmpleado(dni)
+        render p.getNombre()
     }
     //def save(){}
     //def update(){}

@@ -15,7 +15,7 @@ class EmpresaService {
 
     def getEmpleado(Integer dni){
         //retornar el empleado con "dni" = dni
-
+        def empleado = Empresa.hasMany.get(dni)
     }
 
     def deletEmpleado(Integer dni){
@@ -23,7 +23,7 @@ class EmpresaService {
 
     }
 
-    def putEmpleado(Integer dni, Persona p){
+    def putEmpleado(Integer dni, Persona p) {
         //Actualizar los datos de la persona con dni, con los datos de la persona p
 
     }
