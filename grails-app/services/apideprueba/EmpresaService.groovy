@@ -2,20 +2,33 @@ package apideprueba
 
 import grails.transaction.Transactional
 
+import java.awt.List
+
 @Transactional
 class EmpresaService {
 
     def serviceMethod() {
     }
 
-    def postEmpleado(Persona p){
-        //agregar a base de datos una persona p
-
+    def postEmpresa(Integer empid , String empnom){
+        Empresa e = new Empresa()
+        e.id = empid
+        e.nombre = empnom
+        e.save(flush:true)
     }
 
     def getEmpleado(Integer dni){
         //retornar el empleado con "dni" = dni
-        def empleado = Empresa.hasMany.get(dni)
+        //def empleado = Empresa.hasMany.get(dni)
+    }
+
+    def getEmpleados(){
+        //retorna una lista de todos los empleados
+        //def list = []
+        //def it = Empresa.hasMany.iterator()
+        //while (it.hasNext())
+          //  list.add(it.next())
+        //return list
     }
 
     def deletEmpleado(Integer dni){

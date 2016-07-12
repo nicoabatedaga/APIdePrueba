@@ -10,7 +10,7 @@ class PersonaController {
     }
 
     def get(Integer dni){
-        render
+        //render
     }
 
 //    def create(){
@@ -18,8 +18,8 @@ class PersonaController {
 //    }
     def save(){
         //String nombre, Integer dni, String email
-        respond new Persona(nombre, dni, email)
-        render "La persona con nombre: "+nombre+"\ndni: "+dni+"\nemail: "+email
+        //respond new Persona(nombre, dni, email)
+        //render "La persona con nombre: "+nombre+"\ndni: "+dni+"\nemail: "+email
     }
     //def update(){}
     //def delete(){}
