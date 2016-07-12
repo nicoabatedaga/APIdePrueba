@@ -23,7 +23,7 @@ class Persona {
     public getNombre(){
         return this.nombre
     }
-    public getdni(){
+    public getDni(){
         return this.dni
     }
     public getEmail(){
