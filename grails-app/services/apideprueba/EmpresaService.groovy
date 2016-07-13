@@ -11,33 +11,35 @@ class EmpresaService {
     }
 
     def postEmpresa(Integer empid , String empnom){
-        Empresa e = new Empresa()
-        e.id = empid
-        e.nombre = empnom
-        e.save(flush:true)
+        if (Empresa.find("from Empresa as b where b.empresa_id = ${empid}") != null)
+            return [status: 404, response: [message: "id: ${empid}, ya existente."]]
+        else {
+            Empresa e = new Empresa()
+            e.empresa_id = empid
+            e.empresa_nombre = empnom
+            e.save(flush: true)
+            return [status: 201, response: [empresa_id: e.empresa_id, empresa_nombre: e.empresa_nombre]]
+        }
     }
 
-    def getEmpleado(Integer dni){
-        //retornar el empleado con "dni" = dni
-        //def empleado = Empresa.hasMany.get(dni)
+    def getEmpresa(Integer empid){
+        def query = Empresa.find("from Empresa as b where b.empresa_id = ${empid}")
+        if (query == null)
+            return ([status: 400 , response: [message: "No se encontro la empresa con id: ${empid}"]])
+        else
+            return ([status: 200 , response: query?.properties])
     }
 
-    def getEmpleados(){
-        //retorna una lista de todos los empleados
-        //def list = []
-        //def it = Empresa.hasMany.iterator()
-        //while (it.hasNext())
-          //  list.add(it.next())
-        //return list
-    }
-
-    def deletEmpleado(Integer dni){
-        //Eliminar el empleado
-
-    }
-
-    def putEmpleado(Integer dni, Persona p) {
-        //Actualizar los datos de la persona con dni, con los datos de la persona p
-
+    def getEmpresas(){
+        def query =  (Empresa.getAll())
+        if (query == [])
+            return ([status: 400 , response: [message: "No se encontraron empresas registradas"]])
+        else {
+            def obj = []
+            def it = query.iterator()
+            while (it.hasNext())
+                obj << it.next().properties
+            return ([status: 200, response: [obj]])
+        }
     }
 }

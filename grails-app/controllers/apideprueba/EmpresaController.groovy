@@ -12,10 +12,22 @@ class EmpresaController {
     def save(){
         def empresa_id = request.getParameter("id") as Integer
         def empresa_nombre = request.getParameter("nombre") as String
-        def result = empresaService.postEmpresa(empresa_id , empresa_nombre)
+        def ret = empresaService.postEmpresa(empresa_id , empresa_nombre)
+        render (ret as JSON)
     }
 
-    def get(){}
+    def get(){
+        if (request.parameterMap.get("empresa_id") != null){
+            //empid
+            def empresa_id = request.getParameter("empresa_id") as Integer
+            def ret = empresaService.getEmpresa(empresa_id)
+            render (ret as JSON)
+        }else{
+            //all
+            def ret = empresaService.getEmpresas()
+            render (ret as JSON)
+        }
+    }
 
     def update(){}
 

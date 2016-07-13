@@ -2,13 +2,14 @@ package apideprueba
 
 class Empresa {
 
-    static hasMany = [personas:Persona]
-    Integer id
-    String nombre
+    static hasMany = [empleados:Persona]
+    Integer empresa_id
+    String empresa_nombre
 
     static constraints = {
-        id(range: 1..100000)
-        nombre(size: 1..50)
+        empresa_id(range: 1..100000)
+        empresa_id unique: true
+        empresa_nombre(size: 1..50)
     }
 
 }
