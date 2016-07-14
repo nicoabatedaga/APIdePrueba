@@ -3,14 +3,16 @@ package apideprueba
 class Persona {
 
     static belongsTo = Empresa
-    String nombre
-    Integer dni
-    String email
+    String persona_nombre
+    Integer persona_dni
+    String persona_email
 
 
     static constraints = {
-        nombre(size: 3..50)
-        dni(range: 1000000..60000000)
-        email(email: true)
+        persona_nombre(size: 3..50)
+        persona_dni(range: 1000000..60000000)
+        persona_dni unique: true
+        persona_email(email: true)
+        persona_email unique: true
     }
 }

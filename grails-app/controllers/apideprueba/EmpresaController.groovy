@@ -29,7 +29,29 @@ class EmpresaController {
         }
     }
 
-    def update(){}
+    def update(){
+        def empresa_id = request.getParameter("empresa_id") as Integer
+        def empresa_nombre = request.getParameter("empresa_nombre") as String
+        //def params = request.getParameterMap()
+        //println("parametros: ${params}")
+       if (empresa_id != null){
+            if (empresa_nombre != null) {
+                println("antes de el service ${empresa_id} ---- ${empresa_nombre}")
+                def ret = empresaService.updateEmpresa_nombre(empresa_id , empresa_nombre)
+                render (ret as JSON)
+           }else{
+                render ([status: 400 , response: [message: "No se especifico el nuevo nombre"]] as JSON)
+            }
+        }else{
+           render ([status: 400 , response: [message: "No se especifico el id de la empresa a actualizar"]] as JSON)
+       }
+    }
+
+    def delete(){
+        def empresa_id = request.getParameter("empresa_id") as Integer
+        def ret = empresaService.delete(empresa_id)
+        render (ret as JSON)
+    }
 
 
     /*def get() {
