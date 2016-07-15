@@ -66,12 +66,10 @@ class PersonaController {
     }
 
     def delete() {
-        println("entra al delete")
         def ret
         def empresa_id = getParams().get("empresa_id") as Integer
         def persona_dni = getParams().get("persona_dni") as Integer
         if (empresaService.existe(empresa_id)) {
-            println("entra al if")
             def empresa = empresaService.getEmpresa(empresa_id).response as Empresa
             ret = personaService.delete(persona_dni , empresa)
         }else{
