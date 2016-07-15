@@ -4,61 +4,79 @@ import grails.converters.JSON
 
 class PersonaController {
 
-    def index() {
-        render "index personaController"
-    }
-
     def personaService
+    def empresaService
 
     def save() {
-        def nombre = request.getParameter("persona_nombre") as String
-        def dni = request.getParameter("persona_dni") as Integer
-        def email = request.getParameter("persona_email") as String
+        def ret
+        def empresa_id = getParams().get("empresa_id") as Integer
+        if (empresaService.existe(empresa_id)) {
+            def params = request.getJSON()
 
-        def ret = personaService.post(nombre, dni, email)
+            def persona_nombre = params["persona_nombre"] as String
+            def persona_dni = params["persona_dni"] as Integer
+            def persona_email = params["persona_email"] as String
+
+            ret = personaService.post(persona_nombre, persona_dni, persona_email, empresaService.getEmpresa(empresa_id).response as Empresa)
+        }else{
+            ret = [status: 400, response: [message: "No existe la empresa con id: ${empresa_id}"]]
+        }
 
         render(ret as JSON)
     }
 
     def get() {
-        if (request.parameterMap.get("persona_dni") != null) {
-            //persona con dni "persona_dni"
-            def persona_dni = request.getParameter("persona_dni") as Integer
-            def ret = personaService.getPersona(persona_dni)
-            render(ret as JSON)
-        } else {
-            //all
-            def ret = personaService.getPersonas()
-            render(ret as JSON)
+        def ret
+        def empresa_id = getParams().get("empresa_id") as Integer
+        def persona_dni = getParams().get("persona_dni") as Integer
+        if (empresaService.existe(empresa_id)) {
+            def empresa = empresaService.getEmpresa(empresa_id).response as Empresa
+            if (persona_dni != null) {
+                //persona con dni "persona_dni"
+                ret = personaService.getPersona(persona_dni , empresa)
+            } else {
+                //all
+                ret = personaService.getPersonas(empresa)
+            }
+        }else{
+            ret = [status: 400, response: [message: "No existe la empresa con id: ${empresa_id}"]]
         }
+        render(ret as JSON)
     }
 
-    /*
-    *
-    * VER ESTE CASO DEL UPDATE HAY QUE AGREGAR EL MAIL
-    *
-    */
-    /*def update() {
+    def update() {
         def persona_dni = request.getParameter("persona_dni") as Integer
         def persona_nombre = request.getParameter("persona_nombre") as String
-        def persona_email = request.getParameter("persona_mail") as String
+        def persona_email = request.getParameter("persona_email") as String
+        def nuevosDatos = [:]
         if (persona_dni != null) {
-            if (empresa_nombre != null) {
-                println("antes de el service ${persona_dni} ---- ${empresa_nombre}")
-                def ret = personaService.updatePersona_nombre(persona_dni, persona_nombre)
+            if (persona_nombre != null)
+                nuevosDatos["persona_nombre"] = persona_nombre
+            if (persona_email != null)
+                nuevosDatos["persona_email"] = persona_email
+            if (nuevosDatos.isEmpty())
+                render([status: 400, response: [message: "No se especificaron datos para actualizar"]] as JSON)
+            else{
+                def ret = personaService.update(persona_dni , nuevosDatos)
                 render(ret as JSON)
-            } else {
-                render([status: 400, response: [message: "No se especifico el nuevo nombre"]] as JSON)
             }
         } else {
             render([status: 400, response: [message: "No se especifico el dni de la persona a actualizar"]] as JSON)
         }
     }
-    */
 
     def delete() {
-        def persona_dni = request.getParameter("persona_dni") as Integer
-        def ret = personaService.delete(persona_dni)
+        println("entra al delete")
+        def ret
+        def empresa_id = getParams().get("empresa_id") as Integer
+        def persona_dni = getParams().get("persona_dni") as Integer
+        if (empresaService.existe(empresa_id)) {
+            println("entra al if")
+            def empresa = empresaService.getEmpresa(empresa_id).response as Empresa
+            ret = personaService.delete(persona_dni , empresa)
+        }else{
+            ret = [status: 400, response: [message: "No existe la empresa con id: ${empresa_id}"]]
+        }
         render(ret as JSON)
     }
 }

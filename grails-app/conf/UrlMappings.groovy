@@ -1,17 +1,27 @@
 class UrlMappings {
 
 	static mappings = {
-        "/$controller/$action?/$id?(.$format)?"{
+        /*"/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here
             }
+        }*/
+
+        "/empresas/$empresa_id/personas/$persona_dni"(controller:"persona", parseRequest:true){
+            action = [GET:"get", PUT:"update", DELETE: "delete"]
         }
 
-        //empresa - POST, GET ALL
-        //empresa/$empresa_id - GET ID , PUT, DELETE
+        "/empresas/$empresa_id/personas"(controller:"persona", parseRequest:true){
+            action = [POST:"save" , GET:"get"]
+        }
 
-        //empresa/$empresa_id/persona - POST PERSONA , GET ALL PERSONA DE EMPRESA
-        //empresa/$empresa_id/persona/$persona_id - GET , PUT, DELETE (PERSONA ID de la empresa)
+        "/empresas/$empresa_id"(controller:"empresa", parseRequest:true){
+            action = [GET:"get", PUT:"update", DELETE: "delete"]
+        }
+
+        "/empresas"(controller:"empresa", parseRequest:true){
+            action = [POST:"save" , GET:"get"]
+        }
 
         "/"(view:"/index")
         "500"(view:'/error')

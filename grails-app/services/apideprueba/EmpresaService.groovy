@@ -56,13 +56,19 @@ class EmpresaService {
     def updateEmpresa_nombre(Integer empresa_id, String empresa_nombre){
         def queryResult = Empresa.find("from Empresa as b where b.empresa_id = ${empresa_id}")
         if (queryResult != null){
-            println("ANTES DE UPDATE: ${queryResult?.properties}")
             queryResult.empresa_nombre = empresa_nombre
-            //println(queryResult?.properties)
             queryResult.save()
             return ([status: 200 , response: [message: "Empresa con id: ${empresa_id} actualizada correctamente"]])
         }else{
             return ([status: 400 , response: [message: "No se encontro la empresa con id: ${empid}"]])
         }
+    }
+
+    def existe(Integer empresa_id){
+        def queryResult = Empresa.find("from Empresa as b where b.empresa_id = ${empresa_id}")
+        if (queryResult != null)
+            true
+        else
+            false
     }
 }
