@@ -9,30 +9,32 @@ class EmpresaController {
     def index() { }
 
     def save(){
-//        def empresa_id = request.getParameter("id") as Integer
-//        def empresa_nombre = request.getParameter("nombre") as String
-        def params = request.getJSON()
-        def empresa_id = params["empresa_id"] as Integer
-        def empresa_nombre = params["empresa_nombre"] as String
+        println("Save ")
+        def param = request.getJSON()
+        def empresa_id = param["empresa_id"] as Integer
+        def empresa_nombre = param["empresa_nombre"] as String
         def ret = empresaService.postEmpresa(empresa_id , empresa_nombre)
-        render (ret as JSON)
+        println("save empresa successful $ret")
+//        return (ret as JSON)
+        render(ret as JSON).toString()
     }
 
     def get(){
-        if (request.getParameter("empresa_id") != null){
+        def ret
+        if (getParams()["empresa_id"] != null){
             //empid
-            def empresa_id = request.getParameter("empresa_id") as Integer
-            def ret = empresaService.getEmpresa(empresa_id)
-            render (ret as JSON)
+            def empresa_id = getParams()["empresa_id"] as Integer
+            ret = empresaService.getEmpresa(empresa_id)
         }else{
             //all
-            def ret = empresaService.getEmpresas()
-            render (ret as JSON)
+            ret = empresaService.getEmpresas()
         }
+        println("get empresa successful ${ret}")
+        render(ret as JSON).toString()
     }
 
     def update(){
-        def empresa_id = request.getParameter("empresa_id") as Integer
+        def empresa_id = getParams()["empresa_id"] as Integer
         def empresa_nombre = request.getJSON()["empresa_nombre"] as String
         //def params = request.getParameterMap()
         //println("parametros: ${params}")
@@ -49,7 +51,7 @@ class EmpresaController {
     }
 
     def delete(){
-        def empresa_id = request.getParameter("empresa_id") as Integer
+        def empresa_id = getParams()["empresa_id"] as Integer
         def ret = empresaService.delete(empresa_id)
         render (ret as JSON)
     }

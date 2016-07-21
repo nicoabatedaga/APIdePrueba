@@ -18,17 +18,22 @@ class PersonaController {
             def persona_email = params["persona_email"] as String
 
             ret = personaService.post(persona_nombre, persona_dni, persona_email, empresaService.getEmpresa(empresa_id).response as Empresa)
+
+            println("save persona successful $ret")
         }else{
             ret = [status: 400, response: [message: "No existe la empresa con id: ${empresa_id}"]]
+
+            println("save persona failure $ret")
         }
 
-        render(ret as JSON)
+        render ("")
+        ret as JSON
     }
 
     def get() {
         def ret
-        def empresa_id = getParams().get("empresa_id") as Integer
-        def persona_dni = getParams().get("persona_dni") as Integer
+        def empresa_id = getParams()["empresa_id"] as Integer
+        def persona_dni = getParams()["persona_dni"] as Integer
         if (empresaService.existe(empresa_id)) {
             def empresa = empresaService.getEmpresa(empresa_id).response as Empresa
             if (persona_dni != null) {
@@ -38,16 +43,19 @@ class PersonaController {
                 //all
                 ret = personaService.getPersonas(empresa)
             }
+            println("get persona successful $ret")
         }else{
             ret = [status: 400, response: [message: "No existe la empresa con id: ${empresa_id}"]]
+            println("get persona failure $ret")
         }
-        render(ret as JSON)
+        render("")
+        ret as JSON
     }
 
     def update() {
-        def persona_dni = request.getParameter("persona_dni") as Integer
-        def persona_nombre = request.getParameter("persona_nombre") as String
-        def persona_email = request.getParameter("persona_email") as String
+        def persona_dni = getParams()["persona_dni"] as Integer
+        def persona_nombre = getParams()["persona_nombre"] as String
+        def persona_email = getParams()["persona_email"] as String
         def nuevosDatos = [:]
         if (persona_dni != null) {
             if (persona_nombre != null)
@@ -67,8 +75,8 @@ class PersonaController {
 
     def delete() {
         def ret
-        def empresa_id = getParams().get("empresa_id") as Integer
-        def persona_dni = getParams().get("persona_dni") as Integer
+        def empresa_id = getParams()["empresa_id"] as Integer
+        def persona_dni = getParams()["persona_dni"] as Integer
         if (empresaService.existe(empresa_id)) {
             def empresa = empresaService.getEmpresa(empresa_id).response as Empresa
             ret = personaService.delete(persona_dni , empresa)
